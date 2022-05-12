@@ -63,10 +63,21 @@ def append_data(index, row, list_of_people):
     
     list_of_people.append(person)
 
+def earliest_check_in(list_of_people):
+    sorted_list = sorted(list_of_people, key=lambda x: x.last_check_in if (x.last_check_in) else dt.now())
+    print(f"\nThe customer with the earliest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")
+
+def latest_check_in(list_of_people):
+    unix_dt = dt.strptime("01/01/1970", "%d/%m/%Y")
+    sorted_list = sorted(list_of_people, key=lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
+    print(f"The customer with the latest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")    
+
 def main():
     list_of_people = []
 
     read_file(list_of_people)
+    earliest_check_in(list_of_people)
+    latest_check_in(list_of_people)
 
 if __name__ == "__main__":
     main()

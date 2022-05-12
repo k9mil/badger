@@ -7,6 +7,8 @@ A Python script which analyzes' a companies data, and retrieves multiple endpoin
 - A list of customer’s full names ordered alphabetically.
 - A list of the companies user’s jobs ordered alphabetically.
 
+## Speed
+
 Testing the run-time speed of the script:
 
 On Windows machines:

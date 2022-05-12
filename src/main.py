@@ -16,6 +16,8 @@ class Person:
         self.phone = phone
         self.company = self._is_valid_company(company)
 
+        self._has_fields_data()
+
     def _is_valid_street(self, street):
         if not street:
             logging.warning(f"Row number {self.id} is missing a required field: Street")
@@ -44,7 +46,7 @@ class Person:
 
     def _has_fields_data(self):
         if len(self.first_name) + len(self.last_name) + len(self.street) + len(self.zip) + len(self.city) + \
-            len(self.type)+ len(str(self.last_check_in)) + len(self.job) + len(self.phone) + len(self.company) < 1:
+            len(self.type) + len(str(self.last_check_in)) + len(self.job) + len(self.phone) + len(self.company) < 5:
                 logging.warning(f"Row number {self.id} does not contain any data!")
 
 def read_file(list_of_people):

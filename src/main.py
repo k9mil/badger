@@ -56,6 +56,9 @@ class Customer:
             len(self.type) + len(self.job) + len(self.phone) + len(self.company) < 1 and self.last_check_in == None:
                 logging.warning(f"Row number {self.id} does not contain any data!")
 
+    def full_name(self):
+        return self.first_name + " " + self.last_name
+
 
 def read_file(list_of_customers: list[None]) -> None:
     """Receives a blank list and reads data from a csv file.
@@ -103,7 +106,7 @@ def earliest_check_in(list_of_customers: list[Customer]) -> None:
     """
 
     sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: customer.last_check_in if (customer.last_check_in) else dt.now())
-    print(f"\nThe customer with the earliest check-in is: {sorted_list_of_customers[0].first_name} {sorted_list_of_customers[0].last_name}")
+    print(f"\nThe customer with the earliest check-in is: {sorted_list_of_customers[0].full_name()}")
 
 def latest_check_in(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out the latest checked in customer.
@@ -118,7 +121,7 @@ def latest_check_in(list_of_customers: list[Customer]) -> None:
     unix_dt = dt.strptime("01/01/1970", "%d/%m/%Y")
     sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: customer.last_check_in if (customer.last_check_in) else unix_dt, reverse = True)
 
-    print(f"The customer with the latest check-in is: {sorted_list_of_customers[0].first_name} {sorted_list_of_customers[0].last_name}")    
+    print(f"The customer with the latest check-in is: {sorted_list_of_customers[0].full_name()}")    
 
 def full_name_alphabetically(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out all of the people, sorted in alphabetical order by their full name.
@@ -135,7 +138,7 @@ def full_name_alphabetically(list_of_customers: list[Customer]) -> None:
     print("\nFull Names, in alphabetical order:")
 
     for customer in sorted_list_of_customers:
-        print(customer.first_name + " " + customer.last_name)
+        print(customer.full_name())
 
 def companies_users_jobs(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out all of the people, sorted by companies user's jobs.

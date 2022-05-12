@@ -53,7 +53,7 @@ class Person:
 
     def _has_fields_data(self):
         if len(self.first_name) + len(self.last_name) + len(self.street) + len(self.zip) + len(self.city) + \
-            len(self.type) + len(str(self.last_check_in)) + len(self.job) + len(self.phone) + len(self.company) < 5:
+            len(self.type) + len(self.job) + len(self.phone) + len(self.company) < 1 and self.last_check_in == None:
                 logging.warning(f"Row number {self.id} does not contain any data!")
 
 

@@ -1,12 +1,13 @@
-import csv, logging, locale
+import csv, logging
 
 from datetime import datetime as dt
+from unidecode import unidecode as ud
 
 class Person:
     def __init__(self, id, first_name, last_name, street, zip, city, type, last_check_in, job, phone, company):
         self.id = id
-        self.first_name = first_name
-        self.last_name = last_name
+        self.first_name = self._remove_first_name_accent(first_name)
+        self.last_name = self._remove_last_name_accent(last_name)
         self.street = self._is_valid_street(street)
         self.zip = self._is_valid_zip(zip)
         self.city = self._is_valid_city(city)
@@ -17,6 +18,12 @@ class Person:
         self.company = self._is_valid_company(company)
 
         self._has_fields_data()
+
+    def _remove_first_name_accent(self, first_name):
+        return ud(first_name, "utf-8")
+
+    def _remove_last_name_accent(self, last_name):
+        return ud(last_name, "utf-8")
 
     def _is_valid_street(self, street):
         if not street:
@@ -49,6 +56,7 @@ class Person:
             len(self.type) + len(str(self.last_check_in)) + len(self.job) + len(self.phone) + len(self.company) < 5:
                 logging.warning(f"Row number {self.id} does not contain any data!")
 
+
 def read_file(list_of_people):
     with open("data.csv", mode = "r", encoding = "utf8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -64,16 +72,16 @@ def append_data(index, row, list_of_people):
     list_of_people.append(person)
 
 def earliest_check_in(list_of_people):
-    sorted_list = sorted(list_of_people, key=lambda person: person.last_check_in if (person.last_check_in) else dt.now())
+    sorted_list = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else dt.now())
     print(f"\nThe customer with the earliest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")
 
 def latest_check_in(list_of_people):
     unix_dt = dt.strptime("01/01/1970", "%d/%m/%Y")
-    sorted_list = sorted(list_of_people, key=lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
+    sorted_list = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
     print(f"The customer with the latest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")    
 
 def full_name_alphabetically(list_of_people):
-    sorted_list = sorted(list_of_people, key=lambda person: (person.first_name, person.last_name))
+    sorted_list = sorted(list_of_people, key = lambda person: (person.first_name, person.last_name))
 
     print("\nFull Names, in alphabetical order:")
 
@@ -95,4 +103,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    locale.setlocale(locale.LC_ALL, "es_ES")

@@ -72,25 +72,30 @@ def append_data(index, row, list_of_people):
     list_of_people.append(person)
 
 def earliest_check_in(list_of_people):
-    sorted_list = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else dt.now())
-    print(f"\nThe customer with the earliest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")
+    sorted_list_of_people = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else dt.now())
+    print(f"\nThe customer with the earliest check-in is: {sorted_list_of_people[0].first_name} {sorted_list_of_people[0].last_name}")
 
 def latest_check_in(list_of_people):
     unix_dt = dt.strptime("01/01/1970", "%d/%m/%Y")
-    sorted_list = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
-    print(f"The customer with the latest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")    
+    sorted_list_of_people = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
+
+    print(f"The customer with the latest check-in is: {sorted_list_of_people[0].first_name} {sorted_list_of_people[0].last_name}")    
 
 def full_name_alphabetically(list_of_people):
-    sorted_list = sorted(list_of_people, key = lambda person: (person.first_name, person.last_name))
+    sorted_list_of_people = sorted(list_of_people, key = lambda person: (person.first_name, person.last_name))
 
     print("\nFull Names, in alphabetical order:")
 
-    for item in sorted_list:
-        print(item.first_name + " " + item.last_name)
+    for person in sorted_list_of_people:
+        print(person.first_name + " " + person.last_name)
 
 def companies_users_jobs(list_of_people):
-    print("")
+    sorted_list_of_people = sorted(list_of_people, key = lambda person: (person.company, person.job))
 
+    print("\nCompanies user's jobs, in alphabetical order:")
+
+    for person in sorted_list_of_people:
+        print(person.company + " " + person.job)
 
 def main():
     list_of_people = []
@@ -100,6 +105,7 @@ def main():
     latest_check_in(list_of_people)
     full_name_alphabetically(list_of_people)
     companies_users_jobs(list_of_people)
+
 
 if __name__ == "__main__":
     main()

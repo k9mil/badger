@@ -3,7 +3,7 @@ import csv, logging, time
 from datetime import datetime as dt
 from unidecode import unidecode as ud
 
-class Person:
+class Customer:
     def __init__(self, id, first_name, last_name, street, zip, city, type, last_check_in, job, phone, company):
         self.id = id
         self.first_name = self._remove_first_name_accent(first_name)
@@ -57,11 +57,11 @@ class Person:
                 logging.warning(f"Row number {self.id} does not contain any data!")
 
 
-def read_file(list_of_people: list[None]) -> None:
+def read_file(list_of_customers: list[None]) -> None:
     """Receives a blank list and reads data from a csv file.
 
     Args:
-        list_of_people: An empty list.
+        list_of_customers: An empty list.
 
     Returns:
         None
@@ -71,98 +71,98 @@ def read_file(list_of_people: list[None]) -> None:
         csv_reader = csv.DictReader(csv_file)
         index = 0
         for row in csv_reader:
-            append_data(index, row, list_of_people)
+            append_data(index, row, list_of_customers)
             index += 1
 
-def append_data(index: int, row: dict[str, str], list_of_people: list[Person]) -> None:
-    """Receives a row, as well as a list of people and creates a Person object, which it
+def append_data(index: int, row: dict[str, str], list_of_customers: list[Customer]) -> None:
+    """Receives a row, as well as a list of people and creates a Customer object, which it
     then appends to the given list.
 
     Args:
         index: Current line count.
         row: A row (dict[str, str]) of data, containing the columns as well as their respective values from the row.
-        list_of_people: An list of people.
+        list_of_customers: A list of customer.
 
     Returns:
         None
     """
 
-    person = Person((index + 1), row["First Name"], row["Last Name"], row["Street"], row["Zip"], row["City"], row["Type"], \
+    customer = Customer((index + 1), row["First Name"], row["Last Name"], row["Street"], row["Zip"], row["City"], row["Type"], \
                      row["Last Check-In Date"], row["Job"], row["Phone"], row["Company"])
     
-    list_of_people.append(person)
+    list_of_customers.append(customer)
 
-def earliest_check_in(list_of_people: list[Person]) -> None:
-    """Receives a list of person objects and prints out the earliest checked in person.
+def earliest_check_in(list_of_customers: list[Customer]) -> None:
+    """Receives a list of customer objects and prints out the earliest checked in customer.
 
     Args:
-        list_of_people: A list of people.
+        list_of_customers: A list of customers.
 
     Returns:
         None
     """
 
-    sorted_list_of_people = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else dt.now())
-    print(f"\nThe customer with the earliest check-in is: {sorted_list_of_people[0].first_name} {sorted_list_of_people[0].last_name}")
+    sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: customer.last_check_in if (customer.last_check_in) else dt.now())
+    print(f"\nThe customer with the earliest check-in is: {sorted_list_of_customers[0].first_name} {sorted_list_of_customers[0].last_name}")
 
-def latest_check_in(list_of_people: list[Person]) -> None:
-    """Receives a list of person objects and prints out the latest checked in person.
+def latest_check_in(list_of_customers: list[Customer]) -> None:
+    """Receives a list of customer objects and prints out the latest checked in customer.
 
     Args:
-        list_of_people: A list of people.
+        list_of_customers: A list of people.
 
     Returns:
         None
     """
     
     unix_dt = dt.strptime("01/01/1970", "%d/%m/%Y")
-    sorted_list_of_people = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
+    sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: customer.last_check_in if (customer.last_check_in) else unix_dt, reverse = True)
 
-    print(f"The customer with the latest check-in is: {sorted_list_of_people[0].first_name} {sorted_list_of_people[0].last_name}")    
+    print(f"The customer with the latest check-in is: {sorted_list_of_customers[0].first_name} {sorted_list_of_customers[0].last_name}")    
 
-def full_name_alphabetically(list_of_people: list[Person]) -> None:
-    """Receives a list of person objects and prints out all of the people, sorted in alphabetical order by their full name.
+def full_name_alphabetically(list_of_customers: list[Customer]) -> None:
+    """Receives a list of customer objects and prints out all of the people, sorted in alphabetical order by their full name.
 
     Args:
-        list_of_people: A list of people.
+        list_of_customers: A list of people.
 
     Returns:
         None
     """
 
-    sorted_list_of_people = sorted(list_of_people, key = lambda person: (person.first_name, person.last_name))
+    sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: (customer.first_name, customer.last_name))
 
     print("\nFull Names, in alphabetical order:")
 
-    for person in sorted_list_of_people:
-        print(person.first_name + " " + person.last_name)
+    for customer in sorted_list_of_customers:
+        print(customer.first_name + " " + customer.last_name)
 
-def companies_users_jobs(list_of_people: list[Person]) -> None:
-    """Receives a list of person objects and prints out all of the people, sorted by companies user's jobs.
+def companies_users_jobs(list_of_customers: list[Customer]) -> None:
+    """Receives a list of customer objects and prints out all of the people, sorted by companies user's jobs.
 
     Args:
-        list_of_people: A list of people.
+        list_of_customers: A list of people.
 
     Returns:
         None
     """
 
-    sorted_list_of_people = sorted(list_of_people, key = lambda person: (person.company, person.job))
+    sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: (customer.company, customer.job))
 
     print("\nCompanies user's jobs, in alphabetical order:")
 
-    for person in sorted_list_of_people:
-        print(person.company + " " + person.job)
+    for customer in sorted_list_of_customers:
+        print(customer.company + " " + customer.job)
 
 def main():
     t_start = time.time()
-    list_of_people: list[Person] = []
+    list_of_customers: list[Customer] = []
 
-    read_file(list_of_people)
-    earliest_check_in(list_of_people)
-    latest_check_in(list_of_people)
-    full_name_alphabetically(list_of_people)
-    companies_users_jobs(list_of_people)
+    read_file(list_of_customers)
+    earliest_check_in(list_of_customers)
+    latest_check_in(list_of_customers)
+    full_name_alphabetically(list_of_customers)
+    companies_users_jobs(list_of_customers)
 
     t_end = time.time()
     print("\nThe total running time for main is: " + str(t_end - t_start))

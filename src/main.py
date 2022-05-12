@@ -1,4 +1,4 @@
-import csv, logging, time
+import csv, logging, time, locale
 
 from datetime import datetime as dt
 from unidecode import unidecode as ud
@@ -6,8 +6,8 @@ from unidecode import unidecode as ud
 class Customer:
     def __init__(self, id, first_name, last_name, street, zip, city, type, last_check_in, job, phone, company):
         self.id = id
-        self.first_name = self._remove_first_name_accent(first_name)
-        self.last_name = self._remove_last_name_accent(last_name)
+        self.first_name = first_name
+        self.last_name = last_name
         self.street = self._is_valid_street(street)
         self.zip = self._is_valid_zip(zip)
         self.city = self._is_valid_city(city)
@@ -18,12 +18,6 @@ class Customer:
         self.company = self._is_valid_company(company)
 
         self._has_fields_data()
-
-    def _remove_first_name_accent(self, first_name):
-        return ud(first_name, "utf-8")
-
-    def _remove_last_name_accent(self, last_name):
-        return ud(last_name, "utf-8")
 
     def _is_valid_street(self, street):
         if not street:
@@ -132,13 +126,20 @@ def full_name_alphabetically(list_of_customers: list[Customer]) -> None:
     Returns:
         None
     """
+    
+    full_list = []
+    locale.setlocale(locale.LC_ALL, "")
 
-    sorted_list_of_customers = sorted(list_of_customers, key = lambda customer: (customer.first_name, customer.last_name))
+    for customer in list_of_customers:
+        if customer.first_name and customer.last_name:
+            full_list.append(customer.full_name())
+
+    full_list.sort(key=locale.strxfrm)
 
     print("\nFull Names, in alphabetical order:")
 
-    for customer in sorted_list_of_customers:
-        print(customer.full_name())
+    for customer in full_list:
+        print(customer)
 
 def companies_users_jobs(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out all of the people, sorted by companies user's jobs.

@@ -106,7 +106,7 @@ def latest_check_in(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out the latest checked in customer.
 
     Args:
-        list_of_customers: A list of people.
+        list_of_customers: A list of customers.
 
     Returns:
         None
@@ -119,9 +119,10 @@ def latest_check_in(list_of_customers: list[Customer]) -> None:
 
 def full_name_alphabetically(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out all of the people, sorted in alphabetical order by their full name.
+    In order to accomplish this, a locale is set for acceented names, and a custom list is created then displayed.
 
     Args:
-        list_of_customers: A list of people.
+        list_of_customers: A list of customers.
 
     Returns:
         None
@@ -134,7 +135,7 @@ def full_name_alphabetically(list_of_customers: list[Customer]) -> None:
         if customer.first_name and customer.last_name:
             full_list.append(customer.full_name())
 
-    full_list.sort(key=locale.strxfrm)
+    full_list.sort(key = locale.strxfrm)
 
     print("\nFull Names, in alphabetical order:")
 
@@ -145,7 +146,7 @@ def companies_users_jobs(list_of_customers: list[Customer]) -> None:
     """Receives a list of customer objects and prints out all of the people, sorted by companies user's jobs.
 
     Args:
-        list_of_customers: A list of people.
+        list_of_customers: A list of customers.
 
     Returns:
         None

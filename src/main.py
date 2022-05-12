@@ -57,7 +57,16 @@ class Person:
                 logging.warning(f"Row number {self.id} does not contain any data!")
 
 
-def read_file(list_of_people):
+def read_file(list_of_people: list[None]) -> None:
+    """Receives a blank list and reads data from a csv file.
+
+    Args:
+        list_of_people: An empty list.
+
+    Returns:
+        None
+    """
+
     with open("data.csv", mode = "r", encoding = "utf8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
         index = 0
@@ -65,23 +74,62 @@ def read_file(list_of_people):
             append_data(index, row, list_of_people)
             index += 1
 
-def append_data(index, row, list_of_people):
+def append_data(index: int, row: dict[str, str], list_of_people: list[Person]) -> None:
+    """Receives a row, as well as a list of people and creates a Person object, which it
+    then appends to the given list.
+
+    Args:
+        index: Current line count.
+        row: A row (dict[str, str]) of data, containing the columns as well as their respective values from the row.
+        list_of_people: An list of people.
+
+    Returns:
+        None
+    """
+
     person = Person((index + 1), row["First Name"], row["Last Name"], row["Street"], row["Zip"], row["City"], row["Type"], \
                      row["Last Check-In Date"], row["Job"], row["Phone"], row["Company"])
     
     list_of_people.append(person)
 
-def earliest_check_in(list_of_people):
+def earliest_check_in(list_of_people: list[Person]) -> None:
+    """Receives a list of person objects and prints out the earliest checked in person.
+
+    Args:
+        list_of_people: A list of people.
+
+    Returns:
+        None
+    """
+
     sorted_list_of_people = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else dt.now())
     print(f"\nThe customer with the earliest check-in is: {sorted_list_of_people[0].first_name} {sorted_list_of_people[0].last_name}")
 
-def latest_check_in(list_of_people):
+def latest_check_in(list_of_people: list[Person]) -> None:
+    """Receives a list of person objects and prints out the latest checked in person.
+
+    Args:
+        list_of_people: A list of people.
+
+    Returns:
+        None
+    """
+    
     unix_dt = dt.strptime("01/01/1970", "%d/%m/%Y")
     sorted_list_of_people = sorted(list_of_people, key = lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
 
     print(f"The customer with the latest check-in is: {sorted_list_of_people[0].first_name} {sorted_list_of_people[0].last_name}")    
 
-def full_name_alphabetically(list_of_people):
+def full_name_alphabetically(list_of_people: list[Person]) -> None:
+    """Receives a list of person objects and prints out all of the people, sorted in alphabetical order by their full name.
+
+    Args:
+        list_of_people: A list of people.
+
+    Returns:
+        None
+    """
+
     sorted_list_of_people = sorted(list_of_people, key = lambda person: (person.first_name, person.last_name))
 
     print("\nFull Names, in alphabetical order:")
@@ -89,7 +137,16 @@ def full_name_alphabetically(list_of_people):
     for person in sorted_list_of_people:
         print(person.first_name + " " + person.last_name)
 
-def companies_users_jobs(list_of_people):
+def companies_users_jobs(list_of_people: list[Person]) -> None:
+    """Receives a list of person objects and prints out all of the people, sorted by companies user's jobs.
+
+    Args:
+        list_of_people: A list of people.
+
+    Returns:
+        None
+    """
+
     sorted_list_of_people = sorted(list_of_people, key = lambda person: (person.company, person.job))
 
     print("\nCompanies user's jobs, in alphabetical order:")
@@ -98,7 +155,7 @@ def companies_users_jobs(list_of_people):
         print(person.company + " " + person.job)
 
 def main():
-    list_of_people = []
+    list_of_people: list[Person] = []
 
     read_file(list_of_people)
     earliest_check_in(list_of_people)

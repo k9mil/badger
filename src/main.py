@@ -1,4 +1,4 @@
-import csv, logging
+import csv, logging, time
 
 from datetime import datetime as dt
 from unidecode import unidecode as ud
@@ -155,6 +155,7 @@ def companies_users_jobs(list_of_people: list[Person]) -> None:
         print(person.company + " " + person.job)
 
 def main():
+    t_start = time.time()
     list_of_people: list[Person] = []
 
     read_file(list_of_people)
@@ -162,6 +163,9 @@ def main():
     latest_check_in(list_of_people)
     full_name_alphabetically(list_of_people)
     companies_users_jobs(list_of_people)
+
+    t_end = time.time()
+    print("\nThe total running time for main is: " + str(t_end - t_start))
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-import csv, logging
+import csv, logging, locale
 
 from datetime import datetime as dt
 
@@ -64,7 +64,7 @@ def append_data(index, row, list_of_people):
     list_of_people.append(person)
 
 def earliest_check_in(list_of_people):
-    sorted_list = sorted(list_of_people, key=lambda x: x.last_check_in if (x.last_check_in) else dt.now())
+    sorted_list = sorted(list_of_people, key=lambda person: person.last_check_in if (person.last_check_in) else dt.now())
     print(f"\nThe customer with the earliest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")
 
 def latest_check_in(list_of_people):
@@ -72,12 +72,27 @@ def latest_check_in(list_of_people):
     sorted_list = sorted(list_of_people, key=lambda person: person.last_check_in if (person.last_check_in) else unix_dt, reverse=True)
     print(f"The customer with the latest check-in is: {sorted_list[0].first_name} {sorted_list[0].last_name}")    
 
+def full_name_alphabetically(list_of_people):
+    sorted_list = sorted(list_of_people, key=lambda person: (person.first_name, person.last_name))
+
+    print("\nFull Names, in alphabetical order:")
+
+    for item in sorted_list:
+        print(item.first_name + " " + item.last_name)
+
+def companies_users_jobs(list_of_people):
+    print("")
+
+
 def main():
     list_of_people = []
 
     read_file(list_of_people)
     earliest_check_in(list_of_people)
     latest_check_in(list_of_people)
+    full_name_alphabetically(list_of_people)
+    companies_users_jobs(list_of_people)
 
 if __name__ == "__main__":
     main()
+    locale.setlocale(locale.LC_ALL, "es_ES")

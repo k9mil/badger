@@ -64,12 +64,16 @@ def read_file(list_of_customers: list[None]) -> None:
         None
     """
 
-    with open("data.csv", mode = "r", encoding = "utf8") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        index = 0
-        for row in csv_reader:
-            append_data(index, row, list_of_customers)
-            index += 1
+    try:
+        with open("data.csv", mode = "r", encoding = "utf8") as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            index = 0
+            for row in csv_reader:
+                append_data(index, row, list_of_customers)
+                index += 1
+    except FileNotFoundError:
+        logging.error(f"File does not exist! Exiting!")
+        exit()
 
 def append_data(index: int, row: dict[str, str], list_of_customers: list[Customer]) -> None:
     """Receives a row, as well as a list of people and creates a Customer object, which it
